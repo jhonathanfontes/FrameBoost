@@ -1,0 +1,19 @@
+RewriteEngine On
+Options All -Indexes
+
+# --- Ou permitir arquivos em .well-known sem reescrita ---
+RewriteCond %{REQUEST_URI} \.well-known/
+RewriteRule - - [L]
+
+# Não reescrever para arquivos e pastas existentes
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Não reescrever para arquivos estáticos comuns
+RewriteRule \.(jpg|jpeg|png|gif|ico|css|js|svg|webp|mp4|woff|woff2|ttf|eot|map)$ - [L]
+
+# Reescrever todas as outras URLs para index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,NC,L]
